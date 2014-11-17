@@ -15,12 +15,8 @@ R_IP_PORT = sys.argv[2].split("@")[1]
 IP = R_IP_PORT.split(":")[0]
 PORT = R_IP_PORT.split(":")[1]
 
-# Dirección IP del servidor.
-SERVER = 'localhost'
-PORT = 6001
-
 # Contenido que vamos a enviar
-LINE = '¡Hola mundo!'
+LINE = "sip:" + METODO + "@" + IP + " SIP/2.0\r\n\r\n"
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
