@@ -1,15 +1,15 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 """
-Clase (y programa principal) para un servidor de eco en UDP simple
+Clase (y programa principal) para un servidor SIP en UDP simple
 """
 
 import SocketServer
 
 
-class EchoHandler(SocketServer.DatagramRequestHandler):
+class SipHandler(SocketServer.DatagramRequestHandler):
     """
-    Echo server class
+    SIP server class
     """
 
     def handle(self):
@@ -26,6 +26,6 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
-    serv = SocketServer.UDPServer(("", 6001), EchoHandler)
+    serv = SocketServer.UDPServer(("", 6001), SipHandler)
     print "Lanzando servidor UDP de eco..."
     serv.serve_forever()
