@@ -38,19 +38,28 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
     """
 
     def handle(self):
-        # Escribe dirección y puerto del cliente (de tupla client_address)
-        self.wfile.write("Hemos recibido tu peticion")
         while 1:
-            # Leyendo línea a línea lo que nos envía el cliente
+        # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
-            print "El cliente nos manda " + line
-
-            # Si no hay más líneas salimos del bucle infinito
             if not line:
                 break
+            print "El cliente nos manda " + line
+            lista = line.split()
+            metodo = lista[0]
+        
+            if metodo == 'INVITE':
+                self.wfile.write('SIP/2.0 100 TRYING\r\n\r\n')
+                print 'Enviando: ' + 'SIP/2.0 100 TRYING\r\n\r\n'
+
+                self.wfile.write('SIP/2.0 180 RING\r\n\r\n')
+                print 'Enviando: ' + 'SIP/2.0 180 RING\r\n\r\n'
+
+                self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
+                print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
+
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
     serv = SocketServer.UDPServer(("", PUERTO), EchoHandler)
-    print "\nLanzando servidor UDP de eco... \r\n"
+    print "\nListening... \r\n"
     serv.serve_forever()
