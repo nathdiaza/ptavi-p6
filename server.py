@@ -6,6 +6,7 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 
 import SocketServer
 import sys
+import os
 
 # Servidor UDP simple
 
@@ -54,6 +55,15 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write('SIP/2.0 180 RING\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 180 RING\r\n\r\n'
 
+                self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
+                print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
+            elif metodo == 'ACK':
+                # aEjecutar es un string con lo que se ha de ejecutar en la shell
+                aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + FICHERO
+                print "Vamos a ejecutar", aEjecutar
+                os.system(aEjecutar)
+                print "El fichero de audio ha finalizado"
+            elif metodo == 'BYE':
                 self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
 
