@@ -51,10 +51,8 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
             if metodo == 'INVITE':
                 self.wfile.write('SIP/2.0 100 TRYING\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 100 TRYING\r\n\r\n'
-
                 self.wfile.write('SIP/2.0 180 RING\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 180 RING\r\n\r\n'
-
                 self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
             elif metodo == 'ACK':
@@ -66,7 +64,10 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
             elif metodo == 'BYE':
                 self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
-
+            elif metodo == 'OPTIONS' or 'REGISTER' or 'CANCEL':
+                self.wfile.write('SIP/2.0 405 Method Not Allowed\r\n\r\n')
+            else:
+                self.wfile.write('SIP/2.0 400 Bad Request\r\n\r\n')
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
