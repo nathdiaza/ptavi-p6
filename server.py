@@ -5,6 +5,31 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 """
 
 import SocketServer
+import sys
+
+# Servidor UDP simple
+
+# Errores en la línea de comando
+if len(sys.argv) != 4:
+    print "Usage: python server.py IP port audio_file"
+    raise SystemExit
+    
+# IP del servidor y FICHERO del audio
+IP = sys.argv[1]
+FICHERO = sys.argv[3]
+
+# Errores en los valores: PUERTO y FILE
+try:
+    PUERTO = int(sys.argv[2])
+except ValueError:
+    print "Error: Puerto incorrecto"
+    raise SystemExit
+
+try: 
+    file = open(FICHERO, 'r+')
+except IOError:
+    print "Error: Fichero de audio no encontrado"
+    raise SystemExit 
 
 
 class EchoHandler(SocketServer.DatagramRequestHandler):
@@ -26,6 +51,6 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
-    serv = SocketServer.UDPServer(("", 6001), EchoHandler)
-    print "Lanzando servidor UDP de eco..."
+    serv = SocketServer.UDPServer(("", PUERTO), EchoHandler)
+    print "\nLanzando servidor UDP de eco... \r\n"
     serv.serve_forever()
