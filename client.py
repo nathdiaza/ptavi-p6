@@ -13,7 +13,7 @@ import sys
 if len(sys.argv) != 3:
     print "Usage: python client.py method receiver@IP:SIPport"
     raise SystemExit
-    
+
 # METODO, LOGIN e IP del receptor
 METODO = sys.argv[1].upper()
 LOGIN = sys.argv[2].split("@")[0]
@@ -25,11 +25,14 @@ metodos_SIP = ("INVITE", "BYE")
 if not METODO in metodos_SIP:
     print "Error: Método SIP incorrecto"
     raise SystemExit
-    
+
 try:
     PUERTO = int(sys.argv[2].split("@")[1].split(":")[1])
 except ValueError:
     print "Error: Puerto incorrecto"
+    raise SystemExit
+except IndexError:
+    print "Usage: python client.py method receiver@IP:SIPport"
     raise SystemExit
 
 # Contenido que vamos a enviar
@@ -40,7 +43,7 @@ my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((IP, PUERTO))
 
-print "Enviando: " + LINE
+print "\nEnviando: " + LINE
 my_socket.send(LINE + '\r\n')
 
 # Error si el servidor no está lanzado
@@ -59,19 +62,15 @@ if METODO == 'INVITE' and \
     data_serv[0] == 'SIP/2.0 100 TRYING' and \
         data_serv[1] == 'SIP/2.0 180 RING' and \
             data_serv[2] == 'SIP/2.0 200 OK':
-                LINE = "ACK sip:" + LOGIN + "@" + IP + " SIP/2.0" + "\r\n"
+                LINE = "ACK sip:" + LOGIN + "@" + IP + " SIP/2.0\r\n"
                 print "Enviando: " + LINE
                 my_socket.send(LINE + '\r\n')
 # Si le ha enviado un BYE y recibe ese código, se finaliza la conexión
 elif METODO == 'BYE' and \
     data_serv[0] == 'SIP/2.0 200 OK':
+        print "Se cierra la conexión con el servidor...\r\n"
 
-        # Cerramos todo
-        print "Terminando socket..."
+# Cerramos todo
+print "Terminando socket..."
 my_socket.close()
-print "Fin."
-
-# y que pasa si no le llega eso, finaliza igual?
-# cuando finaliza? despues del ACK tb? como se finaliza?
-
-
+print "\nFin.\r\n"
