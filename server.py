@@ -25,6 +25,9 @@ try:
 except ValueError:
     print "Error: Puerto incorrecto"
     raise SystemExit
+except IndexError:
+    print "Usage: python client.py method receiver@IP:SIPport"
+    raise SystemExit  
 
 try: 
     file = open(FICHERO, 'r+')
@@ -37,7 +40,6 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
     """
     Echo server class
     """
-
     def handle(self):
         while 1:
         # Leyendo línea a línea lo que nos envía el cliente
@@ -60,7 +62,7 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + FICHERO
                 print "Vamos a ejecutar", aEjecutar
                 os.system(aEjecutar)
-                print "El fichero de audio ha finalizado"
+                print "\r\nEl fichero de audio ha finalizado\r\n\r\n"
             elif metodo == 'BYE':
                 self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
                 print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
