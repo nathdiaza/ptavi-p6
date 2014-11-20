@@ -70,7 +70,7 @@ elif METODO == 'BYE' and \
     data_serv[0] == 'SIP/2.0 200 OK':
         print "Se cierra la conexión con el servidor...\r\n"
 
-# Cerramos todo
+# Cerramos el socket
 print "Terminando socket..."
 my_socket.close()
 print "\nFin.\r\n"
