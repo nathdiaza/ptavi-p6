@@ -59,7 +59,7 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
             elif metodo == 'ACK':
                 # aEjecutar: string con lo que se ha de ejecutar en la shell
-                aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + FICHERO
+                aEjecutar = './mp32rtp -i 127.0.0.1 -p 23032 < ' + FICHERO
                 print "Vamos a ejecutar", aEjecutar
                 os.system(aEjecutar)
                 print "\r\nEl fichero de audio ha finalizado\r\n\r\n"
