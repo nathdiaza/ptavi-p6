@@ -50,24 +50,26 @@ class SipHandler(SocketServer.DatagramRequestHandler):
                     ip_clnt = str(self.client_address[0])
                     print line
                     if metodo == "INVITE":
-                        self.wfile.write("SIP/2.0 100 Trying\r\n\r\n")
-                        self.wfile.write("SIP/2.0 180 Ringing\r\n\r\n")
-                        self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
+                        msg = "SIP/2.0 100 Trying\r\n\r\n"
+                        msg += "SIP/2.0 180 Ringing\r\n\r\n"
+                        msg += "SIP/2.0 200 OK\r\n\r\n"
+                        self.wfile.write(msg)
                     elif metodo == "ACK":
                         os.system('chmod 755 mp32rtp')
-                        prg = './mp32rtp'
-                        run = prg + ' -i ' + ip_clnt + ' -p ' + P_MP3 + ' < ' + MP3
+                        prog = './mp32rtp -i '
+                        run = prog + ip_clnt + ' -p ' + P_MP3 + ' < ' + MP3
                         os.system(run)
                     elif metodo == "BYE":
                         self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
                     elif metodo not in list_metodo:
-                        self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n") 
+                        excepcion = "SIP/2.0 405 Method Not Allowed\r\n\r\n"
+                        self.wfile.write(excepcion)
                 else:
                     self.wfile.write('SIP/2.0 400 Bad Request\r\n\r\n')
             break
 
 if __name__ == "__main__":
-    # Creamos servidor de eco y escuchamos
+    # Creamos servidor sip y escuchamos
     serv = SocketServer.UDPServer(("", PORT), SipHandler)
     print "listening...\r\n"
     serv.serve_forever()
