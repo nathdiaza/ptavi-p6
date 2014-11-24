@@ -7,8 +7,15 @@ Programa cliente que abre un socket a un servidor
 import socket
 import sys
 import os
-# Cliente UDP simple.
-NAME_PROGRAM = sys.argv[0]
+
+list_metodo = ['INVITE', 'BYE']
+
+if len(sys.argv) != 3:
+    print 'Usage: python client.py method receiver@IP:SIPport'
+
+if sys.argv[1] not in list_metodo:
+    print 'SIP/2.0 405 Method Not Allowed'
+
 METODO = sys.argv[1]
 LOGIN = sys.argv[2].split("@")[0]
 R_IP_PORT = sys.argv[2].split("@")[1]
