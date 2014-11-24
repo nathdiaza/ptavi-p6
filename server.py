@@ -8,6 +8,8 @@ import SocketServer
 import sys
 import os
 
+list_metodo = ['INVITE', 'BYE', 'ACK']
+
 if len(sys.argv) != 4:
     print 'Usage: python server.py IP port audio_file'
     raise SystemExit
@@ -18,8 +20,13 @@ except ValueError:
     print 'Usage: python server.py IP port audio_file'
     raise SystemExit
 
-IP = sys.argv[1]
 MP3 = sys.argv[3]
+
+if not os.path.exists(MP3):
+    print 'Usage: python server.py IP port audio_file'
+    raise SystemExit
+
+IP = sys.argv[1]
 P_MP3 = str(23032)
 
 
@@ -45,6 +52,8 @@ class SipHandler(SocketServer.DatagramRequestHandler):
                 os.system(run)
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
+            elif metodo not in list_metodo:
+                self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n")
             # Si no hay más líneas salimos del bucle infinito
             if not line:
                 break
