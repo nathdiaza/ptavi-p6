@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
+# Práctica 6 - Javier Martínez Molina
 """
 Programa cliente que abre un socket a un servidor
 """
@@ -10,6 +11,7 @@ import os
 
 list_metodo = ['INVITE', 'BYE']
 
+#Comprobación de posibles excepciones
 if len(sys.argv) != 3:
     print 'Usage: python client.py method receiver@IP:SIPport'
     raise SystemExit
@@ -35,12 +37,12 @@ my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((IP_SERVER, PORT))
 
-print "Enviando: " + LINE
-
 try:
+    #Envio del mensaje
     my_socket.send(LINE + '\r\n')
+    print "Enviando: " + LINE
+    #Recibimos el mensaje
     data = my_socket.recv(1024)
-
 except socket.error:
     print 'Error: No server listening at ' + IP_SERVER + ' port ' + str(PORT)
     raise SystemExit
@@ -55,7 +57,5 @@ if METODO == "INVITE":
                 my_socket.send(ack + "\r\n")
 
 print "Terminando socket..."
-
-# Cerramos todo
 my_socket.close()
 print "Fin."
