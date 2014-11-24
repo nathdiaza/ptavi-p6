@@ -29,10 +29,11 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write("SIP/2.0 100 Trying\r\n")
                 self.wfile.write("SIP/2.0 180 Ring\r\n")
                 self.wfile.write("SIP/2.0 200 OK\r\n")
+                self.wfile.write("\r\n")
                 print 'Respondemos al INVITE de ' + nick
             elif metodo == 'ACK':
                 #Al recibir el ACK ejecuto mp32rtp para mandar el fichero
-                aEjecutar = ('./mp32rtp -i ' + IP + ' -p 23032 < ' + f_audio)
+                aEjecutar = ('./mp32rtp -i 127.0.0.1 -p 23032 < ' + f_audio)
                 print "Ejecutando: ", aEjecutar
                 os.system("chmod +x mp32rtp")
                 os.system(aEjecutar)
