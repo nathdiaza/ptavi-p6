@@ -12,7 +12,7 @@ NAME_PROGRAM = sys.argv[0]
 IP = sys.argv[1]
 PORT = int(sys.argv[2])
 MP3 = sys.argv[3]
-PORT_MP3 = str(23032)
+P_MP3 = str(23032)
 
 
 class SipHandler(SocketServer.DatagramRequestHandler):
@@ -25,6 +25,7 @@ class SipHandler(SocketServer.DatagramRequestHandler):
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
             metodo = line.split(" ")[0]
+            ip_clnt = str(self.client_address[0])
             print line
             if metodo == "INVITE":
                 self.wfile.write("SIP/2.0 100 Trying\r\n\r\n")
@@ -32,8 +33,8 @@ class SipHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             elif metodo == "ACK":
                 os.system('chmod 755 mp32rtp')
-                audio = './mp32rtp -i ' + IP + ' -p ' + PORT_MP3 + ' < ' + MP3
-                os.system(audio)
+                run = './mp32rtp -i ' + ip_clnt + ' -p ' + P_MP3 + ' < ' + MP3
+                os.system(run)
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             # Si no hay más líneas salimos del bucle infinito
