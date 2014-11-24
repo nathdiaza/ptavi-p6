@@ -14,9 +14,9 @@ if len(sys.argv) != 3:
     print 'Usage: python client.py method receiver@IP:SIPport'
     raise SystemExit
 
-if sys.argv[1] not in list_metodo:
-    print 'SIP/2.0 405 Method Not Allowed'
-    raise SystemExit
+#if sys.argv[1] not in list_metodo:
+ #   print 'Usage: python client.py method receiver@IP:SIPport'
+  #  raise SystemExit
 
 try:
     R_IP_PORT = sys.argv[2].split("@")[1]
