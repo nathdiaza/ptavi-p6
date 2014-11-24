@@ -12,15 +12,23 @@ list_metodo = ['INVITE', 'BYE']
 
 if len(sys.argv) != 3:
     print 'Usage: python client.py method receiver@IP:SIPport'
+    raise SystemExit
 
 if sys.argv[1] not in list_metodo:
     print 'SIP/2.0 405 Method Not Allowed'
+    raise SystemExit
 
+try:
+    R_IP_PORT = sys.argv[2].split("@")[1]
+    PORT = int(R_IP_PORT.split(":")[1])
+except ValueError:
+    print 'Usage: python client.py method receiver@IP:SIPport'
+    raise SystemExit
+    
 METODO = sys.argv[1]
 LOGIN = sys.argv[2].split("@")[0]
-R_IP_PORT = sys.argv[2].split("@")[1]
 IP_SERVER = R_IP_PORT.split(":")[0]
-PORT = int(R_IP_PORT.split(":")[1])
+
 
 # Contenido que vamos a enviar
 LINE = METODO + " sip:" + LOGIN + "@" + IP_SERVER + " SIP/2.0\r\n\r\n"
@@ -31,8 +39,13 @@ my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((IP_SERVER, PORT))
 
 print "Enviando: " + LINE
-my_socket.send(LINE + '\r\n')
-data = my_socket.recv(1024)
+try:
+    my_socket.send(LINE + '\r\n')
+    data = my_socket.recv(1024)
+
+except socket.error:
+    print 'Error: No server listening at ' + IP_SERVER + ' port ' + str(PORT)
+    raise SystemExit
 
 print 'Recibido -- \r\n\r\n', data
 
