@@ -31,6 +31,7 @@ class SipHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write("SIP/2.0 180 Ringing\r\n\r\n")
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             elif metodo == "ACK":
+                os.system('chmod 755 mp32rtp')
                 audio = './mp32rtp -i ' + IP + ' -p ' + PORT_MP3 + ' < ' + MP3
                 os.system(audio)
             elif metodo == "BYE":
