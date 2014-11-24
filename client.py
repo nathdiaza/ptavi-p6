@@ -58,16 +58,16 @@ print 'Recibido -- ', data
 data_serv = data.split('\r\n\r\n')
 
 # Si le ha enviado un INVITE y recibe esos códigos, envía el ACK
-if METODO == 'INVITE' and \
-    data_serv[0] == 'SIP/2.0 100 TRYING' and \
-        data_serv[1] == 'SIP/2.0 180 RING' and \
-            data_serv[2] == 'SIP/2.0 200 OK':
+if METODO == 'INVITE':
+    if data_serv[0] == 'SIP/2.0 100 Trying':
+        if data_serv[1] == 'SIP/2.0 180 Ringing':
+            if data_serv[2] == 'SIP/2.0 200 OK':
                 LINE = "ACK sip:" + LOGIN + "@" + IP + " SIP/2.0\r\n"
                 print "Enviando: " + LINE
                 my_socket.send(LINE + '\r\n')
 # Si le ha enviado un BYE y recibe ese código, se finaliza la conexión
-elif METODO == 'BYE' and \
-    data_serv[0] == 'SIP/2.0 200 OK':
+elif METODO == 'BYE':
+    if data_serv[0] == 'SIP/2.0 200 OK':
         print "Se cierra la conexión con el servidor...\r\n"
 
 # Cerramos el socket
