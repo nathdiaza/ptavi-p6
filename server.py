@@ -10,14 +10,15 @@ import os
 
 NAME_PROGRAM = sys.argv[0]
 IP = sys.argv[1]
-PORT = sys.argv[2]
+PORT = int(sys.argv[2])
 MP3 = sys.argv[3]
+PORT_MP3 = str(23032)
 
 
+class SipHandler(SocketServer.DatagramRequestHandler):
     """
-    SIP server class
+    Sip server class
     """
-
     def handle(self):
 
         while 1:
@@ -29,8 +30,9 @@ MP3 = sys.argv[3]
                 self.wfile.write("SIP/2.0 100 Trying\r\n\r\n")
                 self.wfile.write("SIP/2.0 180 Ringing\r\n\r\n")
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
-            #elif metodo == "ACK":
-                
+            elif metodo == "ACK":
+                audio = './mp32rtp -i ' + IP + ' -p ' + PORT_MP3 + ' < ' + MP3
+                os.system(audio)
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             # Si no hay más líneas salimos del bucle infinito
@@ -39,6 +41,6 @@ MP3 = sys.argv[3]
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
-    serv = SocketServer.UDPServer(("", 6001), SipHandler)
+    serv = SocketServer.UDPServer(("", PORT), SipHandler)
     print "listening...\r\n"
     serv.serve_forever()
