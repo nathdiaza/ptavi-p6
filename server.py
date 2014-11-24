@@ -8,9 +8,17 @@ import SocketServer
 import sys
 import os
 
-NAME_PROGRAM = sys.argv[0]
+if len(sys.argv) != 4:
+    print 'Usage: python server.py IP port audio_file'
+    raise SystemExit
+
+try:
+    PORT = int(sys.argv[2])
+except ValueError:
+    print 'Usage: python server.py IP port audio_file'
+    raise SystemExit
+
 IP = sys.argv[1]
-PORT = int(sys.argv[2])
 MP3 = sys.argv[3]
 P_MP3 = str(23032)
 
