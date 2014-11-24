@@ -5,9 +5,15 @@ Clase (y programa principal) para un servidor SIP en UDP simple
 """
 
 import SocketServer
+import sys
+import os
+
+NAME_PROGRAM = sys.argv[0]
+IP = sys.argv[1]
+PORT = sys.argv[2]
+MP3 = sys.argv[3]
 
 
-class SipHandler(SocketServer.DatagramRequestHandler):
     """
     SIP server class
     """
@@ -23,6 +29,8 @@ class SipHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write("SIP/2.0 100 Trying\r\n\r\n")
                 self.wfile.write("SIP/2.0 180 Ringing\r\n\r\n")
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
+            #elif metodo == "ACK":
+                
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             # Si no hay más líneas salimos del bucle infinito
