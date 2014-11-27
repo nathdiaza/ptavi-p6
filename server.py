@@ -54,6 +54,7 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
             sip = line.split()[2]
             protocolo = direc.split(':')[0]
             login_ip = direc.split(':')[1]
+            ip_clt = str(self.client_address[0])
 
             if not metodo in metodos_SIP:
                 self.wfile.write('SIP/2.0 405 Method Not Allowed\r\n\r\n')
@@ -68,10 +69,10 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                         self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
                         print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
                     elif metodo == 'ACK':
-                        # aEjecutar: lo que se ha de ejecutar en la shell
-                        aEjecutar = './mp32rtp -i 127.0.0.1 -p 23032 < ' + FICH
-                        print "Vamos a ejecutar", aEjecutar
-                        os.system(aEjecutar)
+                        # run: lo que se ha de ejecutar en la shell
+                        run = './mp32rtp -i ' + ip_clt + ' -p 23032 < ' + FICH
+                        print "Vamos a ejecutar", run
+                        os.system(run)
                         print "\r\nEl fichero de audio ha finalizado\r\n\r\n"
                     elif metodo == 'BYE':
                         self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
