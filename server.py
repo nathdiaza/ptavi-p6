@@ -52,11 +52,14 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
+    if len(sys.argv) != 4:
+        print "Usage: python server.py IP port audio_file"
+        raise SystemExit
     try:
         #Comprobamos que se meten bien los parametros
         server = sys.argv[1]
         puerto = int(sys.argv[2])
-        f_audio = sys.argv[3]
+        f_audio = open(sys.argv[3], 'r+')
     except IndexError:
         print 'Usage: python servidor.py IP port audio_file'
         sys.exit()
