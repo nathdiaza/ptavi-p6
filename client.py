@@ -13,7 +13,7 @@ if len(sys.argv) != 3 or "@" not in sys.argv[2]:
 
 METHOD = sys.argv[1]
 line = sys.argv[2]
-SIP_ADDRES = LINE.split("@")[0]
+SIP_ADDRES = line.split("@")[0]
 line = line.split("@")[1]
 
 if ":" not in line:
@@ -38,5 +38,4 @@ try:
         print line
     my_socket.close()
 except:
-
     print "Error: no server listening at " + SERVER + " port " + str(PORT)
