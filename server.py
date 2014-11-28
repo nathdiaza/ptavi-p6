@@ -48,25 +48,33 @@ class SipHandler(SocketServer.DatagramRequestHandler):
                 if control >= 0 and control2 >= 0 and control3 >= 0:
                     metodo = line.split(" ")[0]
                     ip_client = str(self.client_address[0])
-                    print line
+                    print "El cliente nos manda " + line
                     #Comprobacion del metodo del mensaje recibido
                     if metodo == "INVITE":
                         msg = "SIP/2.0 100 Trying\r\n\r\n"
+                        print 'Enviando: ' + 'SIP/2.0 100 Trying\r\n\r\n'
                         msg += "SIP/2.0 180 Ringing\r\n\r\n"
+                        print 'Enviando: ' + 'SIP/2.0 180 Ringing\r\n\r\n'
                         msg += "SIP/2.0 200 OK\r\n\r\n"
+                        print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
                         self.wfile.write(msg)
                     elif metodo == "ACK":
                         os.system('chmod 755 mp32rtp')
                         prog = './mp32rtp -i '
                         run = prog + ip_client + ' -p ' + P_MP3 + ' < ' + MP3
+                        print "Vamos a ejecutar", run
                         os.system(run)
+                        print "\r\nEl fichero de audio ha finalizado\r\n\r\n"
                     elif metodo == "BYE":
                         self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
+                        print 'Enviando: ' + 'SIP/2.0 200 OK\r\n\r\n'
                     elif metodo not in list_metodo:
                         excepcion = "SIP/2.0 405 Method Not Allowed\r\n\r\n"
+                        print 'Enviando: SIP/2.0 405 Method Not Allowed\r\n\r\n'
                         self.wfile.write(excepcion)
                 else:
                     self.wfile.write('SIP/2.0 400 Bad Request\r\n\r\n')
+                    print 'Enviando: SIP/2.0 400 Bad Request\r\n\r\n'
             break
 
 if __name__ == "__main__":
